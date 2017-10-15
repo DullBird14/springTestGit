@@ -12,9 +12,8 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
        
-       
-       
        <context:component-scan base-package="com.cys"></context:component-scan>
-       
+       <!-- <bean id="testClass" class="com.cys.demoOne.TestClass"></bean> -->
+       <bean id="testClassTwo" class="com.cys.demoOne.TestClassTwo"></bean>
  </beans>	
  	      

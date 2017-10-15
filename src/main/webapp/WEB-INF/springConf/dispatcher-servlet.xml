@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+ xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+ default-autowire="byName">
+ 
+<!--      启用spring mvc 注解
+    <context:annotation-config /> -->
+    <!-- <bean id="testClass" class="com.cys.demoOne.TestClass"></bean> -->
+<!--     <bean id="demoOneController" class="com.cys.controller.DemoOneController"></bean>
+    <import resource="redis-config.xml"/> -->
+    
+ 	 <!-- 设置使用注解的类所在的jar包 -->
+    <context:component-scan base-package="com.cys.controller">
+    	<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    
+     <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsps/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+ </beans>
