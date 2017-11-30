@@ -1,7 +1,6 @@
 package com.cys.chapter.three;
 
 import com.cys.chapter.util.JedisClientFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 import redis.clients.jedis.Tuple;
