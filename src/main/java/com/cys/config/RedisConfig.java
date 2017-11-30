@@ -17,7 +17,14 @@ public class RedisConfig {
 	}
 	
 	@Bean
-	public StringRedisTemplate redisTemplate(RedisConnectionFactory rcf){
+	public StringRedisTemplate redisStringTemplate(RedisConnectionFactory rcf){
 		return new StringRedisTemplate(rcf);
 	}
+	
+//	@Bean
+//	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory rcf){
+//		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+//		redisTemplate.setConnectionFactory(rcf);
+//		return redisTemplate;
+//	}
 }
