@@ -11,11 +11,12 @@ import java.util.Set;
 /*
 题目：1.商品浏览原有的存储是有序集合，key为商品id，value为时间戳，
 由于时间戳没有实际作用，要求改为列表实现记录用户最近浏览的25个商品
+2.題目：用超時時間代替回話刪除,(session的存儲方式改为字符串)
  */
 public class WebLogin {
     private Jedis client = JedisClientFactory.getInstance();
     private static final int LIMIT_SESSION_NUMBER = 1000;
-
+    private static final int EXPIRE_TIME = 30;
     /**
      * 根据传入的令牌获取用户
      * @param token 令牌
@@ -40,10 +41,30 @@ public class WebLogin {
 //            client.zadd("viewed" + token, Double.valueOf(time), item);
 //            client.zremrangeByRank("viewed" + token, 0, -26);
 //            client.zincrby("viewed", -1.0, item);
-            client.lrem("viewed", 0, item);
-            client.lpush("viewed", item);
-            client.ltrim("viewed", 0, 25);
+            client.lrem("viewed" + token, 0, item);
+            client.lpush("viewed" + token, item);
+            client.ltrim("viewed" + token, 0, 25);
 
+        }
+    }
+
+    /**
+     * 根据令牌统计用户登入情况，最近浏览的商品，还有统计商品浏览的次数
+     * @param token 令牌
+     * @param user  用户ID
+     * @param item  商品ID
+     */
+    void updateTokenForTestTwo(String token, String user, String item){
+        String time = System.currentTimeMillis()+"";
+        client.set(token, user);
+        client.expire(token, EXPIRE_TIME);
+
+        if (null != item) {
+            //题目1改动
+            client.lrem("viewed" + token, 0, item);
+            client.lpush("viewed" + token, item);
+            client.ltrim("viewed" + token, 0, 25);
+            client.expire("viewed" + token, EXPIRE_TIME);
         }
     }
 
@@ -110,11 +131,15 @@ public class WebLogin {
 
     public static void main(String[] args) {
         WebLogin login = new WebLogin();
-        for (int i = 0; i < 30; i++) {
-            login.updateToken("123456", "14", i+"");
-        }
-        login.updateToken("123455", "13", "100");
-        login.printAll();
-        login.close();
+//        for (int i = 0; i < 30; i++) {
+//            login.updateToken("123456", "14", i+"");
+//        }
+//        login.updateToken("123455", "13", "100");
+//        login.printAll();
+//        login.close();
+        login.client.set("test", "1111");
+        login.client.expire("test", 10);
+        login.client.expire("test", 100);
+        System.out.println(login.client.ttl("test"));
     }
 }
